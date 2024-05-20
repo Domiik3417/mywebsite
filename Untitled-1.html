@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Display</title>
+</head>
+<body>
+    <div style="position: relative; display: inline-block;">
+        <img id="originalImage" src="https://th.bing.com/th/id/OIP.TnnO-9C6THhBBCzOhTe7mQHaFj?rs=1&pid=ImgDetMain" alt="Original Image" style="visibility: hidden;">
+        <canvas id="canvas" style="position: absolute; top: 0; left: 0;"></canvas>
+    </div><br><br>
+    <form onsubmit="updateImage(); return false;">
+        <label for="pixels">Enter the number of pixels:</label><br>
+        <input type="number" id="pixels" name="pixels" min="0" required><br><br>
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        function updateImage() {
+            var pixels = document.getElementById("pixels").value;
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var image = document.getElementById("originalImage");
+
+            // Set canvas size to match image size
+            canvas.width = image.width;
+            canvas.height = image.height;
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw a solid color to obscure the image
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Clear pixels to reveal parts of the image
+            ctx.globalCompositeOperation = 'destination-out';
+            for (var i = 0; i < pixels; i++) {
+                var x = Math.floor(Math.random() * canvas.width);
+                var y = Math.floor(Math.random() * canvas.height);
+                ctx.clearRect(x, y, 1, 1);
+            }
+
+            // Show the image
+            image.style.visibility = "visible";
+        }
+    </script>
+</body>
+</html>
